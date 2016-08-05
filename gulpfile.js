@@ -4,6 +4,11 @@ var gulp = require('gulp'),
     concat = require('gulp-concat');
 var browserSync = require('browser-sync');
 
+// Add JS dependancies here
+var jsDependancies = [
+    'node_modules/jquery/dist/jquery.min.js'
+];
+
 // Load plugins
 var $ = require('gulp-load-plugins')({
     rename: {
@@ -83,6 +88,13 @@ gulp.task('images', function() {
         .pipe(gulp.dest('build/images'));
 });
 
+gulp.task('jsLibs', function() {
+    return gulp.src(jsDependancies)
+            .pipe(concat('libraries.js'))
+            .on('error', $.util.log)
+            .pipe(gulp.dest('build/js'))
+});
+
 gulp.task('concatScripts', function() {
     return gulp.src(['src/js/maps.js'])
             .pipe(concat('scripts.js'))
@@ -125,7 +137,7 @@ gulp.task('clean', function(cb) {
 });
 
 
-gulp.task('build', ['styles', 'views', 'images', 'concatScripts']);
+gulp.task('build', ['styles', 'views', 'images', 'jsLibs', 'concatScripts']);
 
 
 gulp.task('default', ['clean'], function() {
