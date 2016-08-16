@@ -39,6 +39,7 @@ window.initMap = async function() {
             ]
     )
 
+
     let mapBounds = new google.maps.LatLngBounds();
     const lines = [];
     bindings.map(it => {
@@ -57,6 +58,26 @@ window.initMap = async function() {
         line.setMap(map);
 
     });
+
+    // Draw the sensors
+    const pointsGridRefs = ['SH 61515 03060','SN 59572 99623','SN 60903 96084','SN 60903 96084','SN 61354 96776','SN 61354 96776','SN 60903 96084','SN 59572 99623','ST 17697 75215', 'ST 17523 75040', 'ST 17663 75652', 'ST 17529 75043', 'ST 17625 75818', 'ST 17726 75210', 'ST 17644 75803'];
+    var currentPointGridRef, pointsLonLat = [];
+    for (var i = 0; i < pointsGridRefs.length; i++) {
+        pointsLonLat[i] = OsGridRef.osGridToLatLon(OsGridRef.parse(pointsGridRefs[i]));
+    }
+    console.log(pointsLonLat);
+
+    var gMapsSensors = [];
+    for (var i = 0; i < pointsLonLat.length; i++) {
+        gMapsSensors[i] = new google.maps.Marker({
+          position: {lat: pointsLonLat[i].lat, lng: pointsLonLat[i].lon},
+          map: map,
+          title: 'Hello world'
+        });
+    }
+
+    var point = {lat: pointsLonLat[0].lat, lng: pointsLonLat[0].lon};
+    console.log(point);
 
     const larg = 2;
     google.maps.event.addListener(map, "zoom_changed", () => {
