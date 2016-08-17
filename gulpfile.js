@@ -90,6 +90,11 @@ gulp.task('scripts', function() {
     return concat({
         "boot.js": [
             'node_modules/babel-polyfill/dist/polyfill.js',
+            'node_modules/c3/c3.min.js',
+            'node_modules/jquery/dist/jquery.min.js',
+            'node_modules/jquery-flot/jquery.flot.js',
+            'node_modules/jquery-flot/jquery.flot.time.js',
+            'node_modules/jquery-flot/jquery.flot.symbol.js',
             "src/bootstrap.js",
         ],
         "app.js": [

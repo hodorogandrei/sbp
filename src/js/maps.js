@@ -19,7 +19,7 @@ window.initMap = async function() {
         );
     }
 
-    const center = await stringToLatLngPlaces("swansea");
+    const center = await stringToLatLngPlaces("cardiff");
     const map = new google.maps.Map(document.getElementById('google-map'), {
         center: center,
         zoom: 13
@@ -60,24 +60,79 @@ window.initMap = async function() {
     });
 
     // Draw the sensors
-    const pointsGridRefs = ['SH 61515 03060','SN 59572 99623','SN 60903 96084','SN 60903 96084','SN 61354 96776','SN 61354 96776','SN 60903 96084','SN 59572 99623','ST 17697 75215', 'ST 17523 75040', 'ST 17663 75652', 'ST 17529 75043', 'ST 17625 75818', 'ST 17726 75210', 'ST 17644 75803'];
-    var currentPointGridRef, pointsLonLat = [];
-    for (var i = 0; i < pointsGridRefs.length; i++) {
-        pointsLonLat[i] = OsGridRef.osGridToLatLon(OsGridRef.parse(pointsGridRefs[i]));
-    }
-    console.log(pointsLonLat);
 
-    var gMapsSensors = [];
-    for (var i = 0; i < pointsLonLat.length; i++) {
-        gMapsSensors[i] = new google.maps.Marker({
-          position: {lat: pointsLonLat[i].lat, lng: pointsLonLat[i].lon},
+    // Sensors object
+    const sensorsNameLocOS =   [{'name': 'Twywn.PenYBont_WTW'      , 'loc': 'SH 61515 03060'},
+                                {'name': 'Twywn.Escuan_SRV'        , 'loc': 'SN 60903 96084'},
+                                {'name': 'Twywn.Mynydd_Bychan_WPS' , 'loc': 'SN 61354 96776'},
+                                {'name': 'Twywn.Gwelfor_Road_WPS ' , 'loc': 'SN 60903 96084'},
+                                {'name': 'Twywn.Escuan'            , 'loc': 'SN 59572 99623'},
+                                {'name': 'Cardiff.Paget_Street'    , 'loc': 'ST 17697 75215'},
+                                {'name': 'Cardiff.Clive_Street.02' , 'loc': 'ST 17523 75040'},
+                                {'name': 'Cardiff.Clare_Road'      , 'loc': 'ST 17663 75652'},
+                                {'name': 'Cardiff.Clive_Street.01' , 'loc': 'ST 17529 75043'},
+                                {'name': 'Cardiff.Court_Road'      , 'loc': 'ST 17625 75818'},
+                                {'name': 'Cardiff.Corporation_Road', 'loc': 'ST 17726 75210'},
+                                {'name': 'Cardiff.Cornwall_Street' , 'loc': 'ST 17644 75803'}
+                            ],
+        sensorsNameLatLng = [];
+    for (var i = 0; i < sensorsNameLocOS.length; i++) {
+        sensorsNameLatLng[i] = {};
+        sensorsNameLatLng[i].loc = OsGridRef.osGridToLatLon(OsGridRef.parse(sensorsNameLocOS[i].loc));
+        sensorsNameLatLng[i].name = sensorsNameLocOS[i].name;
+    }
+
+    console.log(sensorsNameLatLng);
+
+    var infowindow = new google.maps.InfoWindow();
+    for (var i = 0; i < sensorsNameLatLng.length; i++) {
+        // Marker for current sensor
+        var marker = new google.maps.Marker({
+          position: {lat: sensorsNameLatLng[i].loc.lat, lng: sensorsNameLatLng[i].loc.lon},
           map: map,
-          title: 'Hello world'
+          title: sensorsNameLatLng[i].name
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+            infowindow.setContent(this.title);
+            infowindow.open(map,this);
+
+            var thisTitle = this.title;
+            var payload = '{"metrics":[{"tags":{"variable":["flow.' + thisTitle + '"]},"name":"flow","aggregators":[{"name":"sum","align_sampling":true,"sampling":{"value":"1","unit":"milliseconds"}}]}],"cache_time":0,"start_relative":{"value":"1","unit":"days"}}';
+            console.log(payload);
+            // const hash = btoa(':wisdom321!');
+            const username = 'kairosdb';
+            const password = 'wisdom321!';
+            // var data2 = await fetch(`https://eventserver.doc.ic.ac.uk/api/v1/datapoints/query`, { method: 'post', headers: { 'Authorization': `Basic ${hash}`, 'Content-Type': 'application/x-www-form-urlencoded' }, 'body': payload }).then(response => response.json());
+            $.ajax({
+                type: 'POST',
+                url: 'https://eventserver.doc.ic.ac.uk/api/v1/datapoints/query',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                async: false,
+                data: payload,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader ('Authorization', 'Basic ' + btoa(username + ':' + password));
+                },
+                success: function (data){
+                    console.log(data);
+                    // $('.result').html(JSON.stringify(data.queries[0].results[0].values));
+                    var dataset = data.queries[0].results[0].values;
+                    var dataset2 = [
+                        {
+                            label: 'Test',
+                            data: dataset,
+                            color: "#FF0000",
+                            points: { fillColor: "#FF0000", show: true },
+                            lines: { show: true }
+                        }
+                    ];
+                    console.log(dataset);
+                    $.plot($('.result'), dataset2);
+                }
+            });
         });
     }
-
-    var point = {lat: pointsLonLat[0].lat, lng: pointsLonLat[0].lon};
-    console.log(point);
 
     const larg = 2;
     google.maps.event.addListener(map, "zoom_changed", () => {
