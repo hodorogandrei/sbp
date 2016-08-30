@@ -88,17 +88,19 @@ gulp.task('images', function() {
 
 gulp.task('scripts', function() {
     return concat({
-        "boot.js": [
+        "libraries.js": [
             'node_modules/babel-polyfill/dist/polyfill.js',
-            'node_modules/c3/c3.min.js',
             'node_modules/jquery/dist/jquery.min.js',
             'node_modules/jquery-flot/jquery.flot.js',
             'node_modules/jquery-flot/jquery.flot.time.js',
-            'node_modules/jquery-flot/jquery.flot.symbol.js',
-            "src/bootstrap.js",
+            'node_modules/jquery-flot/jquery.flot.symbol.js'
         ],
+        "boot.js": 'src/boot.js',
         "app.js": [
             'src/js/**/*.js',
+        ],
+        "graphs.js": [
+            'src/js-graphs/**/*.js',
         ],
         "vendor.js": [].concat(
             ['src/vendor/**/*.js'],
