@@ -7,18 +7,13 @@ var graphs = function() {
 		const sensorName = sensorQueryArray[1];
 
 		var payload = '{"metrics":[{"tags":{"variable":["flow.' + sensorName + '"]},"name":"flow","aggregators":[{"name":"sum","align_sampling":true,"sampling":{"value":"1","unit":"milliseconds"}}]}],"cache_time":0,"start_relative":{"value":"5","unit":"days"}}';
-        console.log(payload);
         graphs.fetchData(payload);
-	};
-
-	module.eventHandlers = function() {
-		$('')
 	};
 
     module.fetchData = function(payload) {
     	const username = 'kairosdb';
         const password = 'wisdom321!';
-		// var data2 = await fetch(`https://eventserver.doc.ic.ac.uk/api/v1/datapoints/query`, { method: 'post', headers: { 'Authorization': `Basic ${hash}`, 'Content-Type': 'application/x-www-form-urlencoded' }, 'body': payload }).then(response => response.json());
+
         $.ajax({
             type: 'POST',
             url: 'https://eventserver.doc.ic.ac.uk/api/v1/datapoints/query',
@@ -30,8 +25,6 @@ var graphs = function() {
                 xhr.setRequestHeader ('Authorization', 'Basic ' + btoa(username + ':' + password));
             },
             success: function (data){
-                console.log(data);
-                // $('.result').html(JSON.stringify(data.queries[0].results[0].values));
                 graphs.drawGraph(data, payload);
             }
         });
@@ -111,13 +104,13 @@ var graphs = function() {
                 lines: { show: true }
             }
         ];
-        // console.log(dataset);
-        $.plot($('#graph-container'), dataset2);
-        $('#graph-container').UseTooltip();
+
+        $.plot($('.graph-container'), dataset2, flotOptions);
+        $('.graph-container').UseTooltip();
 
         window.onresize = function(event) {
-	        $.plot($('#graph-container'), dataset2);
-	        $('#graph-container').UseTooltip();
+	        $.plot($('.graph-container'), dataset2, flotOptions);
+	        $('.graph-container').UseTooltip();
         }
     };
 
@@ -125,4 +118,3 @@ var graphs = function() {
 }();
 
 graphs.init();
-graphs.eventHandlers();
