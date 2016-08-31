@@ -93,7 +93,8 @@ gulp.task('scripts', function() {
             'node_modules/jquery/dist/jquery.min.js',
             'node_modules/jquery-flot/jquery.flot.js',
             'node_modules/jquery-flot/jquery.flot.time.js',
-            'node_modules/jquery-flot/jquery.flot.symbol.js'
+            'node_modules/jquery-flot/jquery.flot.symbol.js',
+            'node_modules/jquery-flot/jquery.flot.selection.js'
         ],
         "boot.js": 'src/boot.js',
         "app.js": [

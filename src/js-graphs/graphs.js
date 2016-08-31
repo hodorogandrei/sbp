@@ -3,14 +3,17 @@ var graphs = function() {
 	var module = {};
 
 	module.init = function() {
-		const sensorQueryArray = window.location.search.substr(1).split('=');
-		const sensorName = sensorQueryArray[1];
+		const sensorQueryArray = window.location.search.substr(1).split('&');
+		var sensor = {};
+		for (var i = 0; i < sensorQueryArray.length; i++) {
+			sensor[sensorQueryArray[i].split('=')[0]] = sensorQueryArray[i].split('=')[1];
+		}
 
-		var payload = '{"metrics":[{"tags":{"variable":["flow.' + sensorName + '"]},"name":"flow","aggregators":[{"name":"sum","align_sampling":true,"sampling":{"value":"1","unit":"milliseconds"}}]}],"cache_time":0,"start_relative":{"value":"5","unit":"days"}}';
-        graphs.fetchData(payload);
+		var payload = '{"metrics":[{"tags":{"variable":["' + sensor.metric + '.' + sensor.name + '"]},"name":"' + sensor.metric + '","aggregators":[{"name":"sum","align_sampling":true,"sampling":{"value":"1","unit":"milliseconds"}}]}],"cache_time":0,"start_relative":{"value":"5","unit":"days"}}';
+        graphs.fetchGraphData(payload);
 	};
 
-    module.fetchData = function(payload) {
+    module.fetchGraphData = function(payload) {
     	const username = 'kairosdb';
         const password = 'wisdom321!';
 
@@ -31,13 +34,13 @@ var graphs = function() {
     };
 
 	module.drawGraph = function(data, payload) {
-    	var showTooltip = function(x, y, color, contents) {
+    	var showTooltip = function(x, y, contents) {
             $('<div id="tooltip">' + contents + '</div>').css({
                 position: 'absolute',
                 display: 'none',
                 top: y - 40,
                 left: x - 120,
-                border: '2px solid ' + color,
+                border: '2px solid',
                 padding: '3px',
                 'font-size': '9px',
                 'border-radius': '5px',
@@ -46,6 +49,19 @@ var graphs = function() {
                 opacity: 0.9
             }).appendTo("body").fadeIn(200);
         };
+
+        function getTimezone(date)
+		{
+			// Just rips off the timezone string from date's toString method. Probably not the best way to get the timezone.
+			var dateString = date.toString();
+			var index = dateString.lastIndexOf(" ");
+			if (index >= 0)
+			{
+				return dateString.substring(index);
+			}
+
+			return "";
+		}
 
         var previousPoint = null, previousLabel = null;
         $.fn.UseTooltip = function () {
@@ -57,14 +73,14 @@ var graphs = function() {
                         $("#tooltip").remove();
 
                         var x = item.datapoint[0];
-                        var y = item.datapoint[1];
-                        var date = new Date(x);
-                        var color = item.series.color;
-
-                        showTooltip(item.pageX, item.pageY, color,
-                                    "<strong>" + item.series.label + "</strong><br>"  +
-                                    (date.getMonth() + 1) + "/" + date.getDate() +
-                                    " : <strong>" + y + "</strong> (USD/oz)");
+                        var y = item.datapoint[1].toFixed(2);
+						var timestamp = new Date(x);
+						var formattedDate = $.plot.formatDate(timestamp, "%b %e, %Y %H:%M:%S.millis %p");
+						formattedDate = formattedDate.replace("millis", timestamp.getMilliseconds());
+						formattedDate += " " + getTimezone(timestamp);
+						var numberFormat = (y % 1 != 0) ? '0,0[.00]' : '0,0';
+						showTooltip(item.pageX, item.pageY,
+						item.series.label + "<br>" + formattedDate + "<br>" + y);
                     }
                 } else {
                     $("#tooltip").remove();
@@ -72,6 +88,7 @@ var graphs = function() {
                 }
             });
         };
+
         var dataset = data.queries[0].results[0].values;
         var flotOptions = {
             series: {
@@ -105,13 +122,45 @@ var graphs = function() {
             }
         ];
 
-        $.plot($('.graph-container'), dataset2, flotOptions);
-        $('.graph-container').UseTooltip();
+        var $chartContainer = $('.graph-container');
+        $.plot($chartContainer, dataset2, flotOptions);
+        $chartContainer.UseTooltip();
+
+        $("#resetZoom").click(function () {
+			$("#resetZoom").hide();
+			$.plot($chartContainer, dataset2, flotOptions);
+		});
 
         window.onresize = function(event) {
 	        $.plot($('.graph-container'), dataset2, flotOptions);
 	        $('.graph-container').UseTooltip();
         }
+
+        $chartContainer.bind("plotselected", function (event, ranges) {
+			if (flotOptions.yaxes.length != (Object.keys(ranges).length - 1))
+				return;
+
+			var axes = {};
+			axes.yaxes = [];
+
+			$.each(ranges, function(key, value) {
+				if (key == "xaxis")
+				{
+					axes.xaxis = {};
+					axes.xaxis.min = value.from;
+					axes.xaxis.max = value.to;
+				}
+				else {
+					var axis = {};
+					axis.min = value.from;
+					axis.max = value.to;
+					axes.yaxes.push(axis);
+				}
+			});
+
+			$.plot($chartContainer, data, $.extend(true, {}, flotOptions, axes));
+			$("#resetZoom").show();
+		});
     };
 
 	return module;
