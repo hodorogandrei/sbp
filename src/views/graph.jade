@@ -4,6 +4,11 @@ block content
     section.graph-container(style="width: 100%; height: 400px;")
 
     button(id="resetZoom") Reset Zoom
+    br
+    br
+    button.change-unit(data-value="24",  data-unit="hours") Last day
+    button.change-unit(data-value="7",  data-unit="days") Last 7 days
+    button.change-unit(data-value="30", data-unit="days") Last 30 days
     script(src="js/libraries.js")
     script(src="js/vendor.js")
     script(src="js/graphs.js")

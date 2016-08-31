@@ -11,6 +11,21 @@ var graphs = function() {
 
 		var payload = '{"metrics":[{"tags":{"variable":["' + sensor.metric + '.' + sensor.name + '"]},"name":"' + sensor.metric + '","aggregators":[{"name":"sum","align_sampling":true,"sampling":{"value":"1","unit":"milliseconds"}}]}],"cache_time":0,"start_relative":{"value":"5","unit":"days"}}';
         graphs.fetchGraphData(payload);
+
+        var changePayload = function(payload, value, unit) {
+        	var payloadObj = JSON.parse(payload);
+        	payloadObj.start_relative.value = value;
+        	payloadObj.start_relative.unit = unit;
+        	var payloadString = JSON.stringify(payloadObj);
+        	return payloadString;
+        };
+
+        $('html').on('click', '.change-unit', function() {
+        	var value = $(this).data('value');
+        	var unit = $(this).data('unit');
+        	payload = changePayload(payload, value, unit);
+	        graphs.fetchGraphData(payload);
+        })
 	};
 
     module.fetchGraphData = function(payload) {
@@ -64,7 +79,7 @@ var graphs = function() {
 		}
 
         var previousPoint = null, previousLabel = null;
-        $.fn.UseTooltip = function () {
+        $.fn.UseTooltip = function (flotOptions) {
             $(this).bind("plothover", function (event, pos, item) {
                 if (item) {
                     if ((previousLabel != item.series.label) || (previousPoint != item.dataIndex)) {
@@ -91,26 +106,30 @@ var graphs = function() {
 
         var dataset = data.queries[0].results[0].values;
         var flotOptions = {
-            series: {
-                lines: {
-                    show: true
-                },
-                points: {
-                    show: true
-                }
-            },
-            grid: {
-                hoverable: true
-            },
-            selection: {
-                mode: "xy"
-            },
-            xaxis: {
-                mode: "time",
-                timezone: "browser"
-            },
-            colors: ["#4572a7", "#aa4643", "#89a54e", "#80699b", "#db843d"]
-        };
+			series: {
+				lines: {
+					show: true
+				},
+				points: {
+					show: true
+				}
+			},
+			grid: {
+				hoverable: true
+			},
+			selection: {
+				mode: "xy"
+			},
+			xaxis: {
+				mode: "time",
+				timezone: "browser"
+			},
+			colors: ["#4572a7", "#aa4643", "#89a54e", "#80699b", "#db843d"],
+			subtitle: '(Click and drag to zoom)'
+		};
+
+		flotOptions.yaxes = [];
+
         var payloadObj = JSON.parse(payload);
         var dataset2 = [
             {
@@ -124,21 +143,10 @@ var graphs = function() {
 
         var $chartContainer = $('.graph-container');
         $.plot($chartContainer, dataset2, flotOptions);
-        $chartContainer.UseTooltip();
+        $chartContainer.UseTooltip(flotOptions);
 
-        $("#resetZoom").click(function () {
-			$("#resetZoom").hide();
-			$.plot($chartContainer, dataset2, flotOptions);
-		});
-
-        window.onresize = function(event) {
-	        $.plot($('.graph-container'), dataset2, flotOptions);
-	        $('.graph-container').UseTooltip();
-        }
-
-        $chartContainer.bind("plotselected", function (event, ranges) {
-			if (flotOptions.yaxes.length != (Object.keys(ranges).length - 1))
-				return;
+        $($chartContainer).bind("plotselected", function (event, ranges) {
+        	console.log(flotOptions, ranges);
 
 			var axes = {};
 			axes.yaxes = [];
@@ -158,9 +166,19 @@ var graphs = function() {
 				}
 			});
 
-			$.plot($chartContainer, data, $.extend(true, {}, flotOptions, axes));
+			$.plot($chartContainer, dataset2, $.extend(true, {}, flotOptions, axes));
 			$("#resetZoom").show();
 		});
+
+        $("#resetZoom").click(function () {
+			$("#resetZoom").hide();
+			$.plot($chartContainer, dataset2, flotOptions);
+		});
+
+        window.onresize = function(event) {
+	        $.plot($('.graph-container'), dataset2, flotOptions);
+	        $('.graph-container').UseTooltip(flotOptions);
+        }
     };
 
 	return module;
