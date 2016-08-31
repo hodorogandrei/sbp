@@ -32,12 +32,12 @@ var graphs = function() {
             success: function (data){
                 console.log(data);
                 // $('.result').html(JSON.stringify(data.queries[0].results[0].values));
-                graphs.drawGraph(data);
+                graphs.drawGraph(data, payload);
             }
         });
     };
 
-	module.drawGraph = function(data) {
+	module.drawGraph = function(data, payload) {
     	var showTooltip = function(x, y, color, contents) {
             $('<div id="tooltip">' + contents + '</div>').css({
                 position: 'absolute',
@@ -101,9 +101,10 @@ var graphs = function() {
             },
             colors: ["#4572a7", "#aa4643", "#89a54e", "#80699b", "#db843d"]
         };
+        var payloadObj = JSON.parse(payload);
         var dataset2 = [
             {
-                label: 'Test',
+                label: payloadObj.metrics[0].name,
                 data: dataset,
                 color: '#FF0000',
                 points: { fillColor: "#FF0000", show: true },
@@ -111,15 +112,13 @@ var graphs = function() {
             }
         ];
         // console.log(dataset);
-        var plot = $.plot($('#placeholder'), dataset2);
+        $.plot($('#graph-container'), dataset2);
+        $('#graph-container').UseTooltip();
 
-        $('#placeholder').resize();
-        $(".demo-container").resizable({
-			maxWidth: 900,
-			maxHeight: 500,
-			minWidth: 450,
-			minHeight: 250
-		});
+        window.onresize = function(event) {
+	        $.plot($('#graph-container'), dataset2);
+	        $('#graph-container').UseTooltip();
+        }
     };
 
 	return module;
