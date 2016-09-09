@@ -2,20 +2,20 @@ var sensors = function() {
 	var module = {};
 
 	module.process = function() {
-		const sensorsNameLocOS =   [{'name': 'Twywn.PenYBont_WTW'      , 'loc': 'SH 61515 03060', 'metrics': ['pressure', 'flow']},
-                                    {'name': 'Twywn.Escuan_SRV'        , 'loc': 'SN 60903 96084', 'metrics': ['pressure', 'flow']},
-                                    {'name': 'Twywn.Mynydd_Bychan_WPS' , 'loc': 'SN 61354 96776', 'metrics': ['pressure', 'flow']},
-                                    {'name': 'Twywn.Gwelfor_Road_WPS ' , 'loc': 'SN 60903 96084', 'metrics': ['pressure', 'flow']},
-                                    {'name': 'Twywn.Escuan'            , 'loc': 'SN 59572 99623', 'metrics': ['pressure', 'flow']},
-                                    {'name': 'Cardiff.Paget_Street'    , 'loc': 'ST 17697 75215', 'metrics': ['pressure', 'flow']},
-                                    {'name': 'Cardiff.Clive_Street.02' , 'loc': 'ST 17523 75040', 'metrics': ['pressure', 'flow']},
-                                    {'name': 'Cardiff.Clare_Road'      , 'loc': 'ST 17663 75652', 'metrics': ['pressure', 'flow']},
-                                    {'name': 'Cardiff.Clive_Street.01' , 'loc': 'ST 17529 75043', 'metrics': ['pressure', 'flow']},
-                                    {'name': 'Cardiff.Court_Road'      , 'loc': 'ST 17625 75818', 'metrics': ['pressure', 'flow']},
-                                    {'name': 'Cardiff.Corporation_Road', 'loc': 'ST 17726 75210', 'metrics': ['pressure', 'flow']},
-                                    {'name': 'Cardiff.Hillside_WPS'	   , 'loc': 'SH 59028 00907', 'metrics': ['pressure', 'flow']},
-                                    {'name': 'Cardiff.Maengwyn'		   , 'loc': 'SN 61561 96330', 'metrics': ['pressure', 'flow']},
-                                    {'name': 'Cardiff.Cornwall_Street' , 'loc': 'ST 17644 75803', 'metrics': ['pressure', 'flow']}
+		const sensorsNameLocOS =   [{'name': 'Twywn.PenYBont_WTW'      , 'loc': 'SH 61515 03060', 'metrics': ['flow', 'pressure']},
+                                    {'name': 'Twywn.Escuan_SRV'        , 'loc': 'SN 60903 96084', 'metrics': ['flow', 'pressure']},
+                                    {'name': 'Twywn.Mynydd_Bychan_WPS' , 'loc': 'SN 61354 96776', 'metrics': ['flow', 'pressure']},
+                                    {'name': 'Twywn.Gwelfor_Road_WPS ' , 'loc': 'SN 60903 96084', 'metrics': ['flow', 'pressure']},
+                                    {'name': 'Twywn.Escuan'            , 'loc': 'SN 59572 99623', 'metrics': ['flow', 'pressure']},
+                                    {'name': 'Cardiff.Paget_Street'    , 'loc': 'ST 17697 75215', 'metrics': ['flow', 'pressure']},
+                                    {'name': 'Cardiff.Clive_Street.02' , 'loc': 'ST 17523 75040', 'metrics': ['flow', 'pressure']},
+                                    {'name': 'Cardiff.Clare_Road'      , 'loc': 'ST 17663 75652', 'metrics': ['flow', 'pressure']},
+                                    {'name': 'Cardiff.Clive_Street.01' , 'loc': 'ST 17529 75043', 'metrics': ['flow', 'pressure']},
+                                    {'name': 'Cardiff.Court_Road'      , 'loc': 'ST 17625 75818', 'metrics': ['flow', 'pressure']},
+                                    {'name': 'Cardiff.Corporation_Road', 'loc': 'ST 17726 75210', 'metrics': ['flow', 'pressure']},
+                                    {'name': 'Cardiff.Hillside_WPS'	   , 'loc': 'SH 59028 00907', 'metrics': ['flow', 'pressure']},
+                                    {'name': 'Cardiff.Maengwyn'		   , 'loc': 'SN 61561 96330', 'metrics': ['flow', 'pressure']},
+                                    {'name': 'Cardiff.Cornwall_Street' , 'loc': 'ST 17644 75803', 'metrics': ['flow', 'pressure']}
                                 ],
             sensorsNameLatLng = [];
 
