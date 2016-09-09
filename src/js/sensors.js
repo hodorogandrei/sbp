@@ -127,20 +127,30 @@ var sensors = function() {
         // Build the sensors object
         const sensorsNameLatLng = sensors.process();
 
+        // Object for storing icons
+        var icons = {
+          sensor: '../images/sensor.gif'
+        };
+
         // Show the markers on the map
         for (var i = 0; i < sensorsNameLatLng.length; i++) {
             // Marker for current sensor
             var marker = new google.maps.Marker({
               position: {lat: sensorsNameLatLng[i].loc.lat, lng: sensorsNameLatLng[i].loc.lon},
+              lat: sensorsNameLatLng[i].loc.lat,
+              lng: sensorsNameLatLng[i].loc.lon,
               map: map,
               title: sensorsNameLatLng[i].name,
-              metric: sensorsNameLatLng[i].metrics[0]
+              metric: sensorsNameLatLng[i].metrics[0],
+              icon: icons.sensor
             });
 
             // Build the info windows for each sensors
             var infowindow = new google.maps.InfoWindow();
             google.maps.event.addListener(marker, 'click', function() {
-                top.location.href = window.location.origin + '/graph.html?name=' + this.title + '&metric=' + this.metric;
+                var nodeLink = window.location.origin + '/graph.html?name=' + this.title + '&metric=' + this.metric;
+                infowindow.setContent(this.title + '<br/><b>Metric:</b> ' + this.metric + '<br/><br/><b>Position:</b> ' + this.lat + ' ' + this.lng + '<br/><br/><a href="' + nodeLink + '" target="_blank">View graph data</a>');
+                infowindow.open(map,this);
             });
         }
     };
