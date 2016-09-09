@@ -11,22 +11,42 @@ var pipes = function() {
 
 	module.draw = async function(map) {
 		// Fetch pipes data
-		const pipesEndpoint = 'http://131.251.176.109:8082/Data/query?query=PREFIX%20wis%3A<http%3A%2F%2Fwww.WISDOM.org%2FWISDOMontology%23>%0APREFIX%20rdf%3A<http%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23>%0ASELECT%20%20%3FXcoord_US%20%3FYcoord_US%20%3FXcoord_DS%20%3FYcoord_DS%0AWHERE%20%7B%20%0A%3FURI%20wis%3AhasUpstreamNode%20%3FUSnode%20.%0A%3FUSnode%20wis%3AhasXcoord%20%3FXcoord_US%20.%0A%3FUSnode%20wis%3AhasYcoord%20%3FYcoord_US%20.%0A%3FURI%20wis%3AhasDownstreamNode%20%3FDSnode%20.%0A%3FDSnode%20wis%3AhasXcoord%20%3FXcoord_DS%20.%0A%3FDSnode%20wis%3AhasYcoord%20%3FYcoord_DS%20.%0A%7D';
-	    const pipesData = await fetch(pipesEndpoint).then(response => response.json());
+		const pipesEndpointTywyn = 'http://131.251.176.109:8082/ontology/tywyn/select?query=PREFIX%20wis%3A%3Chttp%3A%2F%2Fwww.WISDOM.org%2FWISDOMontology%23%3E%0APREFIX%20rdf%3A%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0ASELECT%20%20%3FXcoord_US%20%3FYcoord_US%20%3FXcoord_DS%20%3FYcoord_DS%0AWHERE%20%7B%20%0A%3FURI%20wis%3AhasUpstreamNode%20%3FUSnode%20.%0A%3FUSnode%20wis%3AhasXcoord%20%3FXcoord_US%20.%0A%3FUSnode%20wis%3AhasYcoord%20%3FYcoord_US%20.%0A%3FURI%20wis%3AhasDownstreamNode%20%3FDSnode%20.%0A%3FDSnode%20wis%3AhasXcoord%20%3FXcoord_DS%20.%0A%3FDSnode%20wis%3AhasYcoord%20%3FYcoord_DS%20.%0A%7D';
+	    const pipesDataTywyn = await fetch(pipesEndpointTywyn).then(response => response.json());
+	    const pipesDataObjTywyn = pipesDataTywyn.sparql.results.result;
 
-	    var pipesBindings = pipesData.results.bindings
+	    const pipesEndpointGower = 'http://131.251.176.109:8082/ontology/gower/select?query=PREFIX%20wis%3A%3Chttp%3A%2F%2Fwww.WISDOM.org%2FWISDOMontology%23%3E%0APREFIX%20rdf%3A%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0ASELECT%20%20%3FXcoord_US%20%3FYcoord_US%20%3FXcoord_DS%20%3FYcoord_DS%0AWHERE%20%7B%20%0A%3FURI%20wis%3AhasUpstreamNode%20%3FUSnode%20.%0A%3FUSnode%20wis%3AhasXcoord%20%3FXcoord_US%20.%0A%3FUSnode%20wis%3AhasYcoord%20%3FYcoord_US%20.%0A%3FURI%20wis%3AhasDownstreamNode%20%3FDSnode%20.%0A%3FDSnode%20wis%3AhasXcoord%20%3FXcoord_DS%20.%0A%3FDSnode%20wis%3AhasYcoord%20%3FYcoord_DS%20.%0A%7D';
+	    const pipesDataGower = await fetch(pipesEndpointGower).then(response => response.json());
+	    const pipesDataObjGower = pipesDataGower.sparql.results.result;
+
+	    var pipesBindingsTywyn = pipesDataObjTywyn
 	        .map(it =>
 	            [
 	                OsGridRef.osGridToLatLon(
-	                    new OsGridRef(it.Xcoord_US.value, it.Ycoord_US.value)
+	                    new OsGridRef(it.binding[0].literal.content, it.binding[1].literal.content) //Xcoord_US.value, Ycoord_US.value
 	                ),
 	                OsGridRef.osGridToLatLon(
-	                    new OsGridRef(it.Xcoord_DS.value, it.Ycoord_DS.value)
+	                    new OsGridRef(it.binding[2].literal.content, it.binding[3].literal.content) //Xcoord_DS.value, Ycoord_DS.value
 	                )
 	            ]
 	    );
 
-		pipes.represent(map, pipesBindings);
+	    var pipesBindingsGower = pipesDataObjGower
+	        .map(it =>
+	            [
+	                OsGridRef.osGridToLatLon(
+	                    new OsGridRef(it.binding[0].literal.content, it.binding[1].literal.content) //Xcoord_US.value, Ycoord_US.value
+	                ),
+	                OsGridRef.osGridToLatLon(
+	                    new OsGridRef(it.binding[2].literal.content, it.binding[3].literal.content) //Xcoord_DS.value, Ycoord_DS.value
+	                )
+	            ]
+	    );
+
+	    var pipesBindings = pipesBindingsTywyn.concat(pipesBindingsGower);
+
+		pipes.represent(map, pipesBindingsTywyn);
+		pipes.represent(map, pipesBindingsGower);
 	};
 
 	module.represent = function(map, pipesBindings) {
