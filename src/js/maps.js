@@ -11,7 +11,7 @@ var googleMaps = function(){
     var module = {};
 
     module.init = function() {
-        const mapsScriptUrl = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBwC-BzmC2WQwxqWjqCl0ROiloWG68UUVs&callback=initMap";
+        const mapsScriptUrl = "https://maps.googleapis.com/maps/api/js?v=3&sensor=true&key=AIzaSyBwC-BzmC2WQwxqWjqCl0ROiloWG68UUVs&callback=initMap";
 
         window.initMap = async function() {
             const geocoder = new google.maps.Geocoder();
