@@ -8,50 +8,17 @@ block content
         section.container
             nav
                 label(for="nav--configure")
-                    span.notmobile Configure
+                    span.notmobile Filter map
                     span.mobile &#9881;
                 span.nav--wrapper
                     input#nav--configure
                     div.nav--list-wrapper
                         ul
-                            li
-                                label(for="nav--configure") Welcome
-                            li
-                                label(for="nav--configure") Documents
-                            li
-                                label(for="nav--configure") Sustainable Design Ideas
-                            li
-                                label(for="nav--configure") Legislation Monitor
-                            li
-                                label(for="nav--configure") Wales Low Zero Carbon Hub
-                            li
-                                label(for="nav--configure") Professional Networking
-                            li
-                                label(for="nav--configure") Recent Updates
-                            li
-                                label(for="nav--configure") BIM
-                            li
-                                label(for="nav--configure") Research and Development
-                            li
-                                label(for="nav--configure") Environmental Systems
-                            li
-                                label(for="nav--configure") Search
-                            li
-                                label(for="nav--configure") Forum
-                            li
-                                label(for="nav--configure") Event Calendar
-                            li
-                                label(for="nav--configure") News
-                            li
-                                label(for="nav--configure") Environmental Technology Skillz
-                            li
-                                label(for="nav--configure") Sustainable Sourcing
-                            li
-                                label(for="nav--configure") Sustainable Design Tools
-                            li
-                                label(for="nav--configure") EU
-                            li
-                                label(for="nav--configure") Buildings and Infrastructure
+                            li(id="show-all")
+                                label(for="nav--configure") Show all
+                            li(id="water-meter")
+                                label(for="nav--configure") Water meter
+
             div.search
                 input(type="search" placeholder="Search: ")
                 button.go

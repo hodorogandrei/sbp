@@ -19,7 +19,7 @@ var pipes = function() {
 	    const pipesDataGower = await fetch(pipesEndpointGower).then(response => response.json());
 	    const pipesDataObjGower = pipesDataGower.sparql.results.result;
 
-	    var pipesBindingsTywyn = pipesDataObjTywyn
+	    const pipesBindingsTywyn = pipesDataObjTywyn
 	        .map(it =>
 	            [
 	                OsGridRef.osGridToLatLon(
@@ -31,7 +31,7 @@ var pipes = function() {
 	            ]
 	    );
 
-	    var pipesBindingsGower = pipesDataObjGower
+	    const pipesBindingsGower = pipesDataObjGower
 	        .map(it =>
 	            [
 	                OsGridRef.osGridToLatLon(
@@ -43,7 +43,7 @@ var pipes = function() {
 	            ]
 	    );
 
-	    var pipesBindings = pipesBindingsTywyn.concat(pipesBindingsGower);
+	    const pipesBindings = pipesBindingsTywyn.concat(pipesBindingsGower);
 
 		pipes.represent(map, pipesBindingsTywyn);
 		pipes.represent(map, pipesBindingsGower);
