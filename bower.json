@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "dependencies": {
     "fetch": "^1.0.0",
-    "es6-promise": "^3.2.2"
+    "es6-promise": "^3.2.2",
+    "select2": "^4.0.3"
   }
 }

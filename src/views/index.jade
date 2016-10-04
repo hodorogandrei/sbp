@@ -7,17 +7,28 @@ block content
         include slider.html
         section.container
             nav
-                label(for="nav--configure")
-                    span.notmobile Filter map
-                    span.mobile &#9881;
-                span.nav--wrapper
-                    input#nav--configure
-                    div.nav--list-wrapper
-                        ul
-                            li(id="show-all")
-                                label(for="nav--configure") Show all
-                            li(id="water-meter")
-                                label(for="nav--configure") Water meter
+                select.data-filter(multiple="multiple")
+                    option(data-filter="CombinedChamber") Combined Chamber
+                    option(data-filter="FoulSubcatchment") Foul Subcatchment
+                    option(data-filter="Subcatchment") Subcatchment
+                    option(data-filter="CombinedSubcatchment") Combined Subcatchment
+                    option(data-filter="FoulChamber") Foul Chamber
+                    option(data-filter="OverlandSubcatchment") Overland Subcatchment
+                    option(data-filter="LevelSensor") Level Sensor
+                    option(data-filter="Sensor") Sensor
+                    option(data-filter="Percentage_LevelSensor") Percentage Level Sensor
+                    option(data-filter="screen_LevelSensor") Screen Level Sensor
+                    option(data-filter="SpillSensor") Spill Sensor
+                    option(data-filter="StormSubcatchment") Storm Subcatchment
+                    option(data-filter="totalSensor") Total Sensor
+                    option(data-filter="FlowSensor") Flow Sensor
+                    option(data-filter="StormOverflowChamber") Storm Overflow Chamber
+                    option(data-filter="Hydrant") Hydrant
+                    option(data-filter="Fitting") Fitting
+                    option(data-filter="WaterMeter") Water Meter
+                    option(data-filter="SystemValve") System Valve
+                    option(data-filter="ControlValve") Control Valve
+                button#filter Filter
 
             div.search
                 input(type="search" placeholder="Search: ")
