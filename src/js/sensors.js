@@ -106,7 +106,7 @@ var sensors = function() {
         					  {'name': 'Gowerton.Rhosog'   				, 'Xcoord': '257219', 'Ycoord':'197596', 'metrics': ['level']}
         ];
 
-        console.log('sensorNameXY', sensorNameXY);
+        // console.log('sensorNameXY', sensorNameXY);
 
         for (var i = 0; i < sensorNameXY.length; i++) {
         	sensorsNameLatLng.push({
@@ -118,7 +118,7 @@ var sensors = function() {
         	});
        	};
 
-       	console.log('sensorsNameLatLng', sensorsNameLatLng);
+       	// console.log('sensorsNameLatLng', sensorsNameLatLng);
 
 		return sensorsNameLatLng;
 	};

@@ -10,6 +10,11 @@ var googleMaps = function(){
 
     var module = {};
 
+    // Custom concatenation function for arrays
+    Array.prototype.extend = function (other_array) {
+        other_array.forEach(function(v) {this.push(v)}, this);
+    }
+
     module.init = function() {
         const mapsScriptUrl = "https://maps.googleapis.com/maps/api/js?v=3&sensor=true&key=AIzaSyBwC-BzmC2WQwxqWjqCl0ROiloWG68UUVs&callback=initMap";
 
@@ -102,11 +107,15 @@ var googleMaps = function(){
                                 '?URI wis:hasYcoord ?Ycoord .',
                 queryToSend,
                 rawObj,
-                markers = [],
+                rawObj1 = new Array(),
+                rawObj2 = new Array(),
+                rawObj3 = new Array(),
+                rawObj23 = new Array(),
+                markers = new Array(),
                 baseUrl = 'http://131.251.176.109:8082/ontology/';
 
             $('html').on('click', '#filter', function() {
-                console.log(selectedItems);
+                // console.log(selectedItems);
                 queryToSend = queryTemplate + '\n' + '{?URI a wis:' + selectedItems[0] + ' . }';
                 for (var i = 1; i < selectedItems.length; i++) {
                     queryToSend += ' UNION {?URI a wis:' + selectedItems[i] + ' . }';
@@ -120,7 +129,15 @@ var googleMaps = function(){
                 }
 
                 rawObj = allObjects.fetch(baseUrl + 'gower/select?query=' + queryToSend);
-                markers = [];
+                rawObj2 = allObjects.fetch(baseUrl + 'tywyn/select?query=' + queryToSend);
+                rawObj3 = allObjects.fetch(baseUrl + 'cardiff/select?query=' + queryToSend);
+
+                // console.log(rawObj2);
+                Array.prototype.push.apply(rawObj, rawObj2);
+                // console.log('rawObj', rawObj);
+                Array.prototype.push.apply(rawObj, rawObj3);
+
+                markers = new Array();
                 for (var i = 0; i < rawObj.length; i++) {
                     var marker = new google.maps.Marker({
                       position: {lat: rawObj[i].lat, lng: rawObj[i].lon},

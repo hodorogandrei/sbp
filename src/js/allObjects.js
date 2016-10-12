@@ -3,6 +3,7 @@ var allObjects = function() {
 
 	module.fetch = function(url) {
 		const allDataEndpoint = url;
+		// console.log(url);
 		// const allData = await fetch(allDataEndpoint).then(response => response.json());
 		jQuery.extend({
 		    getValues: function(url) {
@@ -20,16 +21,21 @@ var allObjects = function() {
 		    }
 		});
 		const allData = $.getValues(url);
-		const allDataObj = allData.sparql.results.result;
+		if(allData.sparql.results) {
+			const allDataObj = allData.sparql.results.result;
 
-		const allDataBindings = allDataObj
-			.map(it =>
-					OsGridRef.osGridToLatLon(
-	                    new OsGridRef(it.binding[0].literal.content, it.binding[1].literal.content) //Xcoord_US.value, Ycoord_US.value
-	                )
-		);
+			const allDataBindings = allDataObj
+				.map(it =>
+						OsGridRef.osGridToLatLon(
+		                    new OsGridRef(it.binding[0].literal.content, it.binding[1].literal.content) //Xcoord_US.value, Ycoord_US.value
+		                )
+			);
 
-		return allDataBindings;
+			return allDataBindings;
+		}
+
+		const emptyArray = new Array();
+		return emptyArray;
 	};
 
 	module.represent = function(map, objData) {
