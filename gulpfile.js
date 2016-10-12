@@ -45,7 +45,11 @@ gulp.task('less', function() {
         'Opera 12.1'
     ];
 
-    return gulp.src('src/**/*.less')
+    return gulp.src([
+            'src/**/*.less',
+            'node_modules/bootstrap-select/less/*.less',
+            'bower_components/bootstrap/less/bootstrap.less'
+        ])
         .pipe($.less({
             paths: ['bower_components']
         })
@@ -94,7 +98,9 @@ gulp.task('scripts', function() {
             'node_modules/jquery-flot/jquery.flot.js',
             'node_modules/jquery-flot/jquery.flot.time.js',
             'node_modules/jquery-flot/jquery.flot.symbol.js',
-            'node_modules/jquery-flot/jquery.flot.selection.js'
+            'node_modules/jquery-flot/jquery.flot.selection.js',
+            'bower_components/bootstrap/js/dropdown.js',
+            'node_modules/bootstrap-select/js/bootstrap-select.js'
         ],
         "boot.js": 'src/boot.js',
         "app.js": [

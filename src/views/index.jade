@@ -7,7 +7,7 @@ block content
         include slider.html
         section.container
             nav
-                select.data-filter(multiple="multiple")
+                select.data-filter.selectpicker(multiple="multiple", data-live-search="true")
                     option(data-filter="CombinedChamber") Combined Chamber
                     option(data-filter="FoulSubcatchment") Foul Subcatchment
                     option(data-filter="Subcatchment") Subcatchment
@@ -30,20 +30,6 @@ block content
                     option(data-filter="ControlValve") Control Valve
                 button#filter Filter
 
-            div.search
-                input(type="search" placeholder="Search: ")
-                button.go
-                    span.notmobile Go
-                    span.mobile &#128269;
-            nav
-                label(for="nav--favourites")
-                    span.notmobile My Favourites
-                    span.mobile &#9733;
-                span.nav--wrapper
-                    input#nav--favourites
-                    div.nav--list-wrapper
-                        ul
-                            li You must sign in in order to view your favourites!
             nav.row.container
                 label(for="nav--menu")
                     span.mobile &#8942;
