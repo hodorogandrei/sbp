@@ -10,11 +10,6 @@ var googleMaps = function(){
 
     var module = {};
 
-    // Custom concatenation function for arrays
-    Array.prototype.extend = function (other_array) {
-        other_array.forEach(function(v) {this.push(v)}, this);
-    }
-
     module.init = function() {
         const mapsScriptUrl = "https://maps.googleapis.com/maps/api/js?v=3&sensor=true&key=AIzaSyBwC-BzmC2WQwxqWjqCl0ROiloWG68UUVs&callback=initMap";
 
@@ -55,48 +50,19 @@ var googleMaps = function(){
                 return encodeURIComponent(string).replace(/'/g,"%27").replace(/"/g,"%22");
             }
 
-            // Draw all objects for Tywyn
-            // var tywynObj = allObjects.fetch('http://131.251.176.109:8082/ontology/tywyn/select?query=%20PREFIX%20wis%3A%3Chttp%3A%2F%2Fwww.WISDOM.org%2FWISDOMontology%23%3E%0APREFIX%20rdf%3A%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0ASELECT%20%20%3FXcoord%20%3FYcoord%20%3Fclass%0AWHERE%20%7B%20%0A%3FURI%20wis%3AhasXcoord%20%3FXcoord%20.%0A%3FURI%20wis%3AhasYcoord%20%3FYcoord%20.%0A%3FURI%20a%20%3Fclass%20.%0A%7D');
-            // var tywynMarkers = [];
-            // for (var i = 0; i < tywynObj.length; i++) {
-            //     var marker = new google.maps.Marker({
-            //       position: {lat: tywynObj[i].lat, lng: tywynObj[i].lon},
-            //       lat: tywynObj[i].lat,
-            //       lng: tywynObj[i].lon
-            //     });
-            //     tywynMarkers.push(marker);
-            // }
-            // setMapOnAll(map, tywynMarkers);
-
-            // // Draw water objects for Tywyn
-            // var tywynWaterObj = allObjects.fetch('http://131.251.176.109:8082/ontology/tywyn/select?query=PREFIX%20wis%3A%3Chttp%3A%2F%2Fwww.WISDOM.org%2FWISDOMontology%23%3E%0APREFIX%20rdf%3A%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0ASELECT%20%20%3FXcoord%20%3FYcoord%20%3Fclass%0AWHERE%20%7B%20%0A%3FURI%20wis%3AhasXcoord%20%3FXcoord%20.%0A%3FURI%20wis%3AhasYcoord%20%3FYcoord%20.%0A%3FURI%20a%20wis%3AWaterMeter%20.%0A%7D');
-            // var tywynWaterMarkers = [];
-            // for (var i = 0; i < tywynWaterObj.length; i++) {
-            //     var marker = new google.maps.Marker({
-            //       position: {lat: tywynWaterObj[i].lat, lng: tywynWaterObj[i].lon},
-            //       lat: tywynWaterObj[i].lat,
-            //       lng: tywynWaterObj[i].lon
-            //     });
-            //     tywynWaterMarkers.push(marker);
-            // }
-
-            // // Draw all objects for Gower
-            // var gowerObj = allObjects.fetch('http://131.251.176.109:8082/ontology/gower/select?query=%20PREFIX%20wis%3A%3Chttp%3A%2F%2Fwww.WISDOM.org%2FWISDOMontology%23%3E%0APREFIX%20rdf%3A%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0ASELECT%20%20%3FXcoord%20%3FYcoord%20%3Fclass%0AWHERE%20%7B%20%0A%3FURI%20wis%3AhasXcoord%20%3FXcoord%20.%0A%3FURI%20wis%3AhasYcoord%20%3FYcoord%20.%0A%3FURI%20a%20%3Fclass%20.%0A%7D');
-            // var gowerMarkers = [];
-            // for (var i = 0; i < gowerObj.length; i++) {
-            //     var marker = new google.maps.Marker({
-            //       position: {lat: gowerObj[i].lat, lng: gowerObj[i].lon},
-            //       lat: gowerObj[i].lat,
-            //       lng: gowerObj[i].lon
-            //     });
-            //     gowerMarkers.push(marker);
-            // }
-            // setMapOnAll(map, gowerMarkers);
-
             var selectedItems = [];
             $('html').on('change', '.data-filter', function() {
                 selectedItems = [];
                 $('.data-filter option:selected').each(function(){ selectedItems.push($(this).data('filter')); });
+            });
+
+            $('#selectpicker').multiselect({
+                includeSelectAllOption: true,
+                enableCaseInsensitiveFiltering: true,
+                enableClickableOptGroups: true,
+                enableCollapsibleOptGroups: true,
+                maxHeight: 300,
+                buttonWidth: '90%'
             });
 
             var queryTemplate = 'PREFIX wis:<http://www.WISDOM.org/WISDOMontology#>' + '\n' +

@@ -47,8 +47,7 @@ gulp.task('less', function() {
 
     return gulp.src([
             'src/**/*.less',
-            'node_modules/bootstrap-select/less/*.less',
-            'node_modules/bootstrap/less/bootstrap.less'
+            'node_modules/bootstrap-multiselect/less/*.less'
         ])
         .pipe($.less({
             paths: ['bower_components']
@@ -90,6 +89,11 @@ gulp.task('images', function() {
         .pipe(gulp.dest('build/images'));
 });
 
+gulp.task('copyFonts', function() {
+    return gulp.src('node_modules/bootstrap/fonts/**/*')
+        .pipe(gulp.dest('build/fonts'));
+})
+
 gulp.task('scripts', function() {
     return concat({
         "libraries.js": [
@@ -99,8 +103,9 @@ gulp.task('scripts', function() {
             'node_modules/jquery-flot/jquery.flot.time.js',
             'node_modules/jquery-flot/jquery.flot.symbol.js',
             'node_modules/jquery-flot/jquery.flot.selection.js',
-            'node_modules/bootstrap/js/dropdown.js',
-            'node_modules/bootstrap-select/js/bootstrap-select.js'
+            'node_modules/bootstrap-multiselect/dist/js/bootstrap-multiselect.js',
+            'node_modules/bootstrap-multiselect/dist/js/bootstrap-multiselect-collapsible-groups.js',
+            'node_modules/bootstrap/js/dropdown.js'
         ],
         "boot.js": 'src/boot.js',
         "app.js": [
@@ -158,7 +163,7 @@ gulp.task('clean', function(cb) {
 });
 
 
-gulp.task('build', ['styles', 'views', 'images', 'scripts']);
+gulp.task('build', ['styles', 'views', 'images', 'scripts', 'copyFonts']);
 
 
 gulp.task('default', ['clean'], function() {
