@@ -1,6 +1,6 @@
 # SBP = Suistanable Building Project
 
-A project made for Cardiff University (collaboration between School of Engineering and School of Computer Science) aimed to draw the elements of the welsh water network on Google Maps (pipes, water sensors, subcatchements, chambers, valves) and associated data from the WISDOM server (http://www.wisdom-project.eu/).
+A project made for Cardiff University (collaboration between School of Engineering and School of Computer Science) aimed to graphically represent (visualise) the elements of the Welsh Water Network on Google Maps (pipes, water sensors, subcatchements, chambers, valves) and associated data (level, flow, pressure, spill, total) from the WISDOM server (http://www.wisdom-project.eu/).
 
 Live version available on: http://sbpwales.surge.sh
 
