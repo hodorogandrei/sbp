@@ -9,7 +9,24 @@ var graphs = function() {
 			sensor[sensorQueryArray[i].split('=')[0]] = sensorQueryArray[i].split('=')[1];
 		}
 
-		var payload = '{"metrics":[{"tags":{"variable":["' + sensor.metric + '.' + sensor.name + '"]},"name":"' + sensor.metric + '","aggregators":[{"name":"sum","align_sampling":true,"sampling":{"value":"1","unit":"milliseconds"}}]}],"cache_time":0,"start_relative":{"value":"5","unit":"days"}}';
+        // console.log(sensor);
+
+        // Turn metrics querystring in an array
+        const metricsArray = sensor['metric'].split(',');
+
+        var metricsPayLoad = '[';
+
+        for (var i = 0; i < metricsArray.length; i++) {
+            metricsPayLoad += '{"tags":{"variable":["' + metricsArray[i] + '.' + sensor.name + '"]},"name":"' + metricsArray[i] + '","group_by":[{"name":"tag","tags":["variable"]}],"aggregators":[{"name":"sum","align_sampling":true,"sampling":{"value":"1","unit":"milliseconds"}}]}';
+
+            // If we are not at the last element of the metrics array
+            if(i + 1 != metricsArray.length) {
+                metricsPayLoad += ',';
+            }
+        }
+
+        metricsPayLoad += ']';
+		var payload = '{"metrics":' + metricsPayLoad + ',"cache_time":0,"start_relative":{"value":"7","unit":"days"}}';
         graphs.fetchGraphData(payload);
 
         var changePayload = function(payload, value, unit) {
@@ -104,49 +121,59 @@ var graphs = function() {
             });
         };
 
-        var dataset = data.queries[0].results[0].values;
-        var flotOptions = {
-			series: {
-				lines: {
-					show: true
-				},
-				points: {
-					show: true
-				}
-			},
-			grid: {
-				hoverable: true
-			},
-			selection: {
-				mode: "xy"
-			},
-			xaxis: {
-				mode: "time",
-				timezone: "browser"
-			},
-			colors: ["#4572a7", "#aa4643", "#89a54e", "#80699b", "#db843d"],
-			subtitle: '(Click and drag to zoom)'
-		};
+        const $chartContainer = $('.graph-container');
+        const flotOptions = {
+            series: {
+                lines: {
+                    show: true
+                },
+                points: {
+                    show: true
+                }
+            },
+            grid: {
+                hoverable: true
+            },
+            selection: {
+                mode: "xy"
+            },
+            xaxis: {
+                mode: "time",
+                timezone: "browser"
+            },
+            colors: ["#4572a7", "#aa4643", "#89a54e", "#80699b", "#db843d"],
+            subtitle: '(Click and drag to zoom)'
+        };
 
-		flotOptions.yaxes = [];
+        flotOptions.yaxes = [];
 
-        var payloadObj = JSON.parse(payload);
-        var dataset2 = [
-            {
-                label: payloadObj.metrics[0].name,
-                data: dataset,
-                color: '#FF0000',
-                points: { fillColor: "#FF0000", show: true },
-                lines: { show: true }
+        const datasetArray = data.queries;
+        // console.log('datasetArray', datasetArray);
+
+        // The dataset to plot on the graph in jqPlot format
+        var datasetToPlotArray = [];
+        // The dataset colours [feel free to change if appropriate]
+        const datasetColours = ['#4572A7', '#AA4643'];
+
+        for (var i = 0; i < datasetArray.length; i++) {
+            var datasetCurrent = datasetArray[i].results[0].values;
+
+            if(datasetCurrent.length > 0) {
+                datasetToPlotArray.push({
+                    label: datasetArray[i].results[0].name,
+                    data: datasetCurrent,
+                    color: datasetColours[i],
+                    points: { fillColor: datasetColours[i], show: true },
+                    lines: { show: true }
+                });
             }
-        ];
+        }
 
-        var $chartContainer = $('.graph-container');
-        $.plot($chartContainer, dataset2, flotOptions);
+        $.plot($chartContainer, datasetToPlotArray, flotOptions);
         $chartContainer.UseTooltip(flotOptions);
-
         $($chartContainer).bind("plotselected", function (event, ranges) {
-        	console.log(flotOptions, ranges);
+            // console.log('here');
+        	// console.log(flotOptions, ranges);
 
 			var axes = {};
 			axes.yaxes = [];
@@ -166,17 +193,17 @@ var graphs = function() {
 				}
 			});
 
-			$.plot($chartContainer, dataset2, $.extend(true, {}, flotOptions, axes));
+			$.plot($chartContainer, datasetToPlotArray, $.extend(true, {}, flotOptions, axes));
 			$("#resetZoom").show();
 		});
 
         $("#resetZoom").click(function () {
 			$("#resetZoom").hide();
-			$.plot($chartContainer, dataset2, flotOptions);
+			$.plot($chartContainer, datasetToPlotArray, flotOptions);
 		});
 
         window.onresize = function(event) {
-	        $.plot($('.graph-container'), dataset2, flotOptions);
+	        $.plot($('.graph-container'), datasetToPlotArray, flotOptions);
 	        $('.graph-container').UseTooltip(flotOptions);
         }
     };
