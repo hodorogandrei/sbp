@@ -1,67 +1,55 @@
 extends layout
 
 block content
-    section.content#google-map
-
     header
         include slider.html
-        .container
-            .row
-                .col-xs-9
-                    select.data-filter.form-control(id="selectpicker", multiple="multiple")
-                        optgroup(label="Subcatchments")
-                            option(data-filter="FoulSubcatchment") Foul Subcatchment
-                            option(data-filter="Subcatchment") Subcatchment
-                            option(data-filter="CombinedSubcatchment") Combined Subcatchment
-                            option(data-filter="FoulChamber") Foul Chamber
-                            option(data-filter="OverlandSubcatchment") Overland Subcatchment
-                            option(data-filter="StormSubcatchment") Storm Subcatchment
-                        optgroup(label="Sensors")
-                            option(data-filter="LevelSensor") Level Sensor
-                            option(data-filter="Sensor") Sensor
-                            option(data-filter="Percentage_LevelSensor") Percentage Level Sensor
-                            option(data-filter="screen_LevelSensor") Screen Level Sensor
-                            option(data-filter="SpillSensor") Spill Sensor
-                            option(data-filter="totalSensor") Total Sensor
-                            option(data-filter="FlowSensor") Flow Sensor
-                        optgroup(label="Chambers")
-                            option(data-filter="CombinedChamber") Combined Chamber
-                            option(data-filter="StormOverflowChamber") Storm Overflow Chamber
-                        optgroup(label="Valves")
-                            option(data-filter="SystemValve") System Valve
-                            option(data-filter="ControlValve") Control Valve
-                        optgroup(label="Others")
-                            option(data-filter="Hydrant") Hydrant
-                            option(data-filter="Fitting") Fitting
-                            option(data-filter="WaterMeter") Water Meter
-                .col-xs-3
-                    div.btn-group
-                        button.btn.btn-default#filter(type="button") Refresh
-                        button.btn.btn-default#clear(type="button") Clear
-        section.container
+        nav.navbar.navbar-default.navbar-fixed-top(role="navigation")
+            .container-fluid
+                .navbar-header
+                    a.navbar-brand Sustainable Building Project
 
-            nav.row.container
-                label(for="nav--menu")
-                    span.mobile &#8942;
-                span.nav--wrapper
-                    input#nav--menu
-                    div.nav--list-wrapper
-                        div.nav--list-inner-wrapper
-                            ul.left
-                                li Home
-                                li Contact
-                                li About
-                                li FAQ
-                            ul.right
-                                li Login
-                                li Create Account
-                                li Why register
+                form.navbar-form.navbar-left(role="search")
+                    .form-group
+                        select.data-filter.form-control(id="selectpicker", multiple="multiple")
+                            optgroup(label="Subcatchments")
+                                option(data-filter="FoulSubcatchment") Foul Subcatchment
+                                option(data-filter="Subcatchment") Subcatchment
+                                option(data-filter="CombinedSubcatchment") Combined Subcatchment
+                                option(data-filter="FoulChamber") Foul Chamber
+                                option(data-filter="OverlandSubcatchment") Overland Subcatchment
+                                option(data-filter="StormSubcatchment") Storm Subcatchment
+                            optgroup(label="Sensors")
+                                option(data-filter="LevelSensor") Level Sensor
+                                option(data-filter="Sensor") Sensor
+                                option(data-filter="Percentage_LevelSensor") Percentage Level Sensor
+                                option(data-filter="screen_LevelSensor") Screen Level Sensor
+                                option(data-filter="SpillSensor") Spill Sensor
+                                option(data-filter="totalSensor") Total Sensor
+                                option(data-filter="FlowSensor") Flow Sensor
+                            optgroup(label="Chambers")
+                                option(data-filter="CombinedChamber") Combined Chamber
+                                option(data-filter="StormOverflowChamber") Storm Overflow Chamber
+                            optgroup(label="Valves")
+                                option(data-filter="SystemValve") System Valve
+                                option(data-filter="ControlValve") Control Valve
+                            optgroup(label="Others")
+                                option(data-filter="Hydrant") Hydrant
+                                option(data-filter="Fitting") Fitting
+                                option(data-filter="WaterMeter") Water Meter
+                    div.btn-group
+                        button.btn.btn-info#filter(type="button")
+                            span.glyphicon.glyphicon-refresh
+                            | &nbsp; Refresh
+                        button.btn.btn-warning#clear(type="button")
+                            span.glyphicon.glyphicon-remove
+                            | &nbsp; Clear
+
+    section.content.content-map#google-map
+
     footer
         nav.row.container
             ul
                 li Disclaimer, Privacy &amp; Cookie Information
-        nav.row.container
-            | Cookie info
 
     script(src="js/libraries.js")
     script(src="js/boot.js")
