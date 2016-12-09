@@ -46,8 +46,9 @@ gulp.task('less', function() {
     ];
 
     return gulp.src([
-            'src/**/*.less',
-            'node_modules/bootstrap-multiselect/less/*.less'
+            'node_modules/bootstrap/less/bootstrap.less',
+            'node_modules/bootstrap-multiselect/dist/less/bootstrap-multiselect.less',
+            'src/**/*.less'
         ])
         .pipe($.less({
             paths: ['bower_components']
