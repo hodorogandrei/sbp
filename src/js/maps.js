@@ -38,7 +38,7 @@ var googleMaps = function(){
             pipes.draw(map);
 
             // Draw the sensors
-            sensors.draw(map);
+            staticObj.draw(map);
 
             var setMapOnAll = function(map, markers) {
                 for (var i = 0; i < markers.length; i++) {
@@ -81,22 +81,28 @@ var googleMaps = function(){
                 baseUrl = 'http://131.251.176.109:8082/ontology/';
 
             $('html').on('click', '#filter', function() {
-                // console.log(selectedItems);
+                if(markers.length) {
+                    setMapOnAll(null, markers);
+                }
+
                 queryToSend = queryTemplate + '\n' + '{?URI a wis:' + selectedItems[0] + ' . }';
                 for (var i = 1; i < selectedItems.length; i++) {
                     queryToSend += ' UNION {?URI a wis:' + selectedItems[i] + ' . }';
                 }
 
                 queryToSend += '\n' + '}';
-                queryToSend = encode(queryToSend);
 
-                if(markers.length) {
-                    setMapOnAll(null, markers);
-                }
+                // // How many elements to retrieve at once
+                // var step = 10;
 
-                rawObj = allObjects.fetch(baseUrl + 'gower/select?query=' + queryToSend);
-                rawObj2 = allObjects.fetch(baseUrl + 'tywyn/select?query=' + queryToSend);
-                rawObj3 = allObjects.fetch(baseUrl + 'cardiff/select?query=' + queryToSend);
+
+
+                var queryToSendCurrent = encode(queryToSend);
+
+
+                rawObj = allObjects.fetch(baseUrl + 'gower/select?query=' + queryToSendCurrent);
+                rawObj2 = allObjects.fetch(baseUrl + 'tywyn/select?query=' + queryToSendCurrent);
+                rawObj3 = allObjects.fetch(baseUrl + 'cardiff/select?query=' + queryToSendCurrent);
 
                 // console.log(rawObj2);
                 Array.prototype.push.apply(rawObj, rawObj2);
@@ -113,6 +119,10 @@ var googleMaps = function(){
                     markers.push(marker);
                 }
                 setMapOnAll(map, markers);
+            });
+
+            $('html').on('click', '#clear', function() {
+                setMapOnAll(null, markers);
             });
 
         }
