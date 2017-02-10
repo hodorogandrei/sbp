@@ -70,7 +70,8 @@ var googleMaps = function(){
                                 'SELECT  ?Xcoord ?Ycoord ?class' + '\n' +
                                 'WHERE {' + '\n' +
                                 '?URI wis:hasXcoord ?Xcoord .' + '\n' +
-                                '?URI wis:hasYcoord ?Ycoord .',
+                                '?URI wis:hasYcoord ?Ycoord .' + '\n' +
+                                '?URI a ?class .',
                 queryToSend,
                 rawObj,
                 rawObj1 = new Array(),
@@ -78,7 +79,7 @@ var googleMaps = function(){
                 rawObj3 = new Array(),
                 rawObj23 = new Array(),
                 markers = new Array(),
-                baseUrl = 'http://131.251.176.109:8082/ontology/';
+                baseUrl = 'https://cardiff.wisdom-project.eu:8082/ontology/';
 
             $('html').on('click', '#filter', function() {
                 if(markers.length) {
@@ -102,12 +103,12 @@ var googleMaps = function(){
 
                 rawObj = allObjects.fetch(baseUrl + 'gower/select?query=' + queryToSendCurrent);
                 rawObj2 = allObjects.fetch(baseUrl + 'tywyn/select?query=' + queryToSendCurrent);
-                rawObj3 = allObjects.fetch(baseUrl + 'cardiff/select?query=' + queryToSendCurrent);
+                // rawObj3 = allObjects.fetch(baseUrl + 'cardiff/select?query=' + queryToSendCurrent);
 
                 // console.log(rawObj2);
                 Array.prototype.push.apply(rawObj, rawObj2);
                 // console.log('rawObj', rawObj);
-                Array.prototype.push.apply(rawObj, rawObj3);
+                // Array.prototype.push.apply(rawObj, rawObj3);
 
                 markers = new Array();
                 for (var i = 0; i < rawObj.length; i++) {

@@ -32,6 +32,7 @@
     "gulp-util": "^3.0.1",
     "jquery": "^3.1.0",
     "jquery-flot": "^0.8.3",
-    "numeral": "^1.5.3"
+    "numeral": "^1.5.3",
+    "oboe": "^2.1.3"
   }
 }

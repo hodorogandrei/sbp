@@ -106,7 +106,8 @@ gulp.task('scripts', function() {
             'node_modules/jquery-flot/jquery.flot.selection.js',
             'node_modules/bootstrap-multiselect/dist/js/bootstrap-multiselect.js',
             'node_modules/bootstrap-multiselect/dist/js/bootstrap-multiselect-collapsible-groups.js',
-            'node_modules/bootstrap/js/dropdown.js'
+            'node_modules/bootstrap/js/dropdown.js',
+            'node_modules/oboe/dist/oboe-browser.min.js'
         ],
         "boot.js": 'src/boot.js',
         "app.js": [

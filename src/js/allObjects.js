@@ -5,37 +5,40 @@ var allObjects = function() {
 		const allDataEndpoint = url;
 		// console.log(url);
 		// const allData = await fetch(allDataEndpoint).then(response => response.json());
-		jQuery.extend({
-		    getValues: function(url) {
-		        var result = null;
-		        $.ajax({
-		            url: url,
-		            type: 'get',
-		            dataType: 'json',
-		            async: false,
-		            success: function(data) {
-		                result = data;
-		            }
-		        });
-		       return result;
-		    }
+		oboe(url).node('results.*', function(result) {
+			console.log(result);
 		});
-		const allData = $.getValues(url);
-		if(allData.sparql.results) {
-			const allDataObj = allData.sparql.results.result;
+		// jQuery.extend({
+		//     getValues: function(url) {
+		//         var result = null;
+		//         $.ajax({
+		//             url: url,
+		//             type: 'get',
+		//             dataType: 'json',
+		//             async: false,
+		//             success: function(data) {
+		//                 result = data;
+		//             }
+		//         });
+		//        return result;
+		//     }
+		// });
+		// const allData = $.getValues(url);
+		// if(allData) {
+		// 	const allDataObj = allData.results;
 
-			const allDataBindings = allDataObj
-				.map(it =>
-						OsGridRef.osGridToLatLon(
-		                    new OsGridRef(it.binding[0].literal.content, it.binding[1].literal.content) //Xcoord_US.value, Ycoord_US.value
-		                )
-			);
+		// 	const allDataBindings = allDataObj
+		// 		.map(it =>
+		// 				OsGridRef.osGridToLatLon(
+		//                     new OsGridRef(it.Xcoord, it.Ycoord) //Xcoord_US.value, Ycoord_US.value
+		//                 )
+		// 	);
 
-			return allDataBindings;
-		}
+		// 	return allDataBindings;
+		// }
 
-		const emptyArray = new Array();
-		return emptyArray;
+		// const emptyArray = new Array();
+		// return emptyArray;
 	};
 
 	module.represent = function(map, objData) {
