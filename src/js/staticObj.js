@@ -8,7 +8,7 @@ var staticObj = function() {
                                     {'name': 'Twywn.Gwelfor_Road_WPS ' , 'loc': 'SN 60903 96084', 'metrics': ['flow', 'pressure']},
                                     {'name': 'Twywn.Escuan'            , 'loc': 'SN 59572 99623', 'metrics': ['flow', 'pressure']},
                                     {'name': 'Cardiff.Paget_Street'    , 'loc': 'ST 17697 75215', 'metrics': ['flow', 'pressure']},
-                                    {'name': 'Cardiff.Clive_Street.02' , 'loc': 'ST 17523 75040', 'metrics': ['flow', 'pressure']},
+                                    {'name': 'Cardiff.Clive_Street.02' , 'loc': 'ST 17523 75040', 'metrics': ['flow']},
                                     {'name': 'Cardiff.Clare_Road'      , 'loc': 'ST 17663 75652', 'metrics': ['flow', 'pressure']},
                                     {'name': 'Cardiff.Clive_Street.01' , 'loc': 'ST 17529 75043', 'metrics': ['flow', 'pressure']},
                                     {'name': 'Cardiff.Court_Road'      , 'loc': 'ST 17625 75818', 'metrics': ['flow', 'pressure']},

@@ -10,6 +10,12 @@ var googleMaps = function(){
 
     var module = {};
 
+    module.setMapOnAll = function(map, markers) {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(map);
+        }
+    };
+
     module.init = function() {
         const mapsScriptUrl = "https://maps.googleapis.com/maps/api/js?v=3&sensor=true&key=AIzaSyBwC-BzmC2WQwxqWjqCl0ROiloWG68UUVs&callback=initMap";
 
@@ -37,14 +43,8 @@ var googleMaps = function(){
             // Draw the pipes
             pipes.draw(map);
 
-            // Draw the sensors
+            // Draw the static objects
             staticObj.draw(map);
-
-            var setMapOnAll = function(map, markers) {
-                for (var i = 0; i < markers.length; i++) {
-                    markers[i].setMap(map);
-                }
-            };
 
             var encode = function(string) {
                 return encodeURIComponent(string).replace(/'/g,"%27").replace(/"/g,"%22");
@@ -73,17 +73,12 @@ var googleMaps = function(){
                                 '?URI wis:hasYcoord ?Ycoord .' + '\n' +
                                 '?URI a ?class .',
                 queryToSend,
-                rawObj,
-                rawObj1 = new Array(),
-                rawObj2 = new Array(),
-                rawObj3 = new Array(),
-                rawObj23 = new Array(),
-                markers = new Array(),
-                baseUrl = 'https://cardiff.wisdom-project.eu:8082/ontology/';
+                baseUrl = 'https://cardiff.wisdom-project.eu:8082/ontology/',
+                markersDrawn = new Array();
 
             $('html').on('click', '#filter', function() {
-                if(markers.length) {
-                    setMapOnAll(null, markers);
+                if(markersDrawn.length) {
+                    googleMaps.setMapOnAll(null, markersDrawn);
                 }
 
                 queryToSend = queryTemplate + '\n' + '{?URI a wis:' + selectedItems[0] + ' . }';
@@ -93,37 +88,21 @@ var googleMaps = function(){
 
                 queryToSend += '\n' + '}';
 
-                // // How many elements to retrieve at once
-                // var step = 10;
-
-
-
                 var queryToSendCurrent = encode(queryToSend);
 
+                markersDrawn = allObjects.fetchAndDraw(baseUrl + 'gower/select?query=' + queryToSendCurrent, map);
+                var markersDrawn2 = allObjects.fetchAndDraw(baseUrl + 'tywyn/select?query=' + queryToSendCurrent, map);
+                var markersDrawn3 = allObjects.fetchAndDraw(baseUrl + 'cardiff/select?query=' + queryToSendCurrent, map);
 
-                rawObj = allObjects.fetch(baseUrl + 'gower/select?query=' + queryToSendCurrent);
-                rawObj2 = allObjects.fetch(baseUrl + 'tywyn/select?query=' + queryToSendCurrent);
-                // rawObj3 = allObjects.fetch(baseUrl + 'cardiff/select?query=' + queryToSendCurrent);
-
-                // console.log(rawObj2);
-                Array.prototype.push.apply(rawObj, rawObj2);
-                // console.log('rawObj', rawObj);
-                // Array.prototype.push.apply(rawObj, rawObj3);
-
-                markers = new Array();
-                for (var i = 0; i < rawObj.length; i++) {
-                    var marker = new google.maps.Marker({
-                      position: {lat: rawObj[i].lat, lng: rawObj[i].lon},
-                      lat: rawObj[i].lat,
-                      lng: rawObj[i].lon
-                    });
-                    markers.push(marker);
-                }
-                setMapOnAll(map, markers);
+                Array.prototype.push.apply(markersDrawn, markersDrawn2);
+                Array.prototype.push.apply(markersDrawn, markersDrawn3);
             });
 
             $('html').on('click', '#clear', function() {
-                setMapOnAll(null, markers);
+                console.log(markersDrawn.length);
+                if(markersDrawn.length) {
+                    googleMaps.setMapOnAll(null, markersDrawn);
+                }
             });
 
         }
