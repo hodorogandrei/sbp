@@ -2,91 +2,53 @@ extends layout
 
 block content
     header
-        include slider.html
-        section.container
-            nav
-                label(for="nav--configure") 
-                    span.notmobile Configure
-                    span.mobile &#9881;
-                span.nav--wrapper
-                    input#nav--configure
-                    div.nav--list-wrapper
-                        ul
-                            li 
-                                label(for="nav--configure") Wellcome
-                            li
-                                label(for="nav--configure") Documents
-                            li
-                                label(for="nav--configure") Sustainable Design Ideas
-                            li
-                                label(for="nav--configure") Legislation Monitor
-                            li
-                                label(for="nav--configure") Wales Low Zero Carbon Hub
-                            li
-                                label(for="nav--configure") Professional Networking
-                            li
-                                label(for="nav--configure") Recent Updates
-                            li
-                                label(for="nav--configure") BIM
-                            li
-                                label(for="nav--configure") Research and Development
-                            li
-                                label(for="nav--configure") Environmental Systems
-                            li
-                                label(for="nav--configure") Search
-                            li
-                                label(for="nav--configure") Forum
-                            li
-                                label(for="nav--configure") Event Calendar
-                            li
-                                label(for="nav--configure") News
-                            li
-                                label(for="nav--configure") Environmental Technology Skillz
-                            li
-                                label(for="nav--configure") Sustainable Sourcing
-                            li
-                                label(for="nav--configure") Sustainable Design Tools
-                            li
-                                label(for="nav--configure") EU
-                            li
-                                label(for="nav--configure") Buildings and Infrastructure
-            div.search
-                input(type="search" placeholder="Search: ")
-                button.go 
-                    span.notmobile Go
-                    span.mobile &#128269;
-            nav 
-                label(for="nav--favourites") 
-                    span.notmobile My Favourites
-                    span.mobile &#9733;
-                span.nav--wrapper
-                    input#nav--favourites
-                    div.nav--list-wrapper
-                        ul
-                            li You must sign in in order to view your favourites! 
-            nav.row.container
-                label(for="nav--menu")
-                    span.mobile &#8942;
-                span.nav--wrapper
-                    input#nav--menu
-                    div.nav--list-wrapper
-                        div.nav--list-inner-wrapper
-                            ul.left
-                                li Home
-                                li Contact
-                                li About
-                                li FAQ
-                            ul.right
-                                li Login
-                                li Create Account
-                                li Why register
+        nav.navbar.navbar-default.navbar-fixed-top(role="navigation")
+            .container-fluid
+                .navbar-header
+                    a.navbar-brand Sustainable Building Project
 
-    section.content
-        iframe(frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q=here&output=embed")
+                form.navbar-form.navbar-left(role="search")
+                    .form-group
+                        select.data-filter.form-control(id="selectpicker", multiple="multiple")
+                            optgroup(label="Subcatchments")
+                                option(data-filter="FoulSubcatchment") Foul Subcatchment
+                                option(data-filter="Subcatchment") Subcatchment
+                                option(data-filter="CombinedSubcatchment") Combined Subcatchment
+                                option(data-filter="FoulChamber") Foul Chamber
+                                option(data-filter="OverlandSubcatchment") Overland Subcatchment
+                                option(data-filter="StormSubcatchment") Storm Subcatchment
+                            optgroup(label="Sensors")
+                                option(data-filter="LevelSensor") Level Sensor
+                                option(data-filter="Sensor") Sensor
+                                option(data-filter="Percentage_LevelSensor") Percentage Level Sensor
+                                option(data-filter="screen_LevelSensor") Screen Level Sensor
+                                option(data-filter="SpillSensor") Spill Sensor
+                                option(data-filter="totalSensor") Total Sensor
+                                option(data-filter="FlowSensor") Flow Sensor
+                            optgroup(label="Chambers")
+                                option(data-filter="CombinedChamber") Combined Chamber
+                                option(data-filter="StormOverflowChamber") Storm Overflow Chamber
+                            optgroup(label="Valves")
+                                option(data-filter="SystemValve") System Valve
+                                option(data-filter="ControlValve") Control Valve
+                            optgroup(label="Others")
+                                option(data-filter="Hydrant") Hydrant
+                                option(data-filter="Fitting") Fitting
+                                option(data-filter="WaterMeter") Water Meter
+                    div.btn-group
+                        button.btn.btn-info#filter(type="button")
+                            span.glyphicon.glyphicon-refresh
+                            | &nbsp; Refresh
+                        button.btn.btn-warning#clear(type="button")
+                            span.glyphicon.glyphicon-remove
+                            | &nbsp; Clear
+
+    section.content.content-map#google-map
 
     footer
         nav.row.container
             ul
                 li Disclaimer, Privacy &amp; Cookie Information
-        nav.row.container
-            | Cookie info
+
+    script(src="js/libraries.js")
+    script(src="js/boot.js")

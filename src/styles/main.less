@@ -1,96 +1,12 @@
 
-@import (inline) "normalize.css/normalize.css";
+// @import (inline) "normalize.css/normalize.css";
 
-@mapsize: 80vh;
+@mapsize: 92vh;
 @br: 4px;
-@headersize: (100vh - @mapsize) / 4;
-
-.verticalMenu {
-    flex: 1;
-    border: solid 1px #ccc;
-    border-radius: @br;
-    position: relative;
-    > label {
-        font-size: 12pt;
-        font-weight: normal;
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        padding: 4px 7px;
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        cursor: pointer;
-        background: white;
-        border-radius: @br;
-        &:after {
-            float: right;
-            content: "";
-            border: solid 3px black;
-            height: 5px;
-            width: 5px;
-            display: inline-block;
-            border-top: none;
-            border-right: none;
-            transform: rotate(-45deg);
-        }
-    }
-    .nav--list-wrapper {
-        z-index: -1;
-        position: absolute;
-        left: -6px;
-        top: -6px;
-        width: 150%;
-        background: white;
-        opacity: 0;
-        margin: 0;
-        padding: 20px 0;
-        border: solid 1px #ccc;
-        transition: all 0.5s ease-in-out;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-        transform: translateY(-15px);
-        > ul, > .nav-list-inner-wrapper {
-            max-height: 200px;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            overflow: auto;
-            li {
-                padding: 7px 10px;
-                background: white;
-                color: #444;
-                margin: 2px 0;
-                transition: all 0.5s ease-in-out;
-                cursor: pointer;
-                label {
-                    width: 100%;
-                    height: 100%;
-                    display: inline-block;
-                }
-                &:hover {
-                    background: #ccc;
-                    color: black;
-                }
-            }
-        }
-    }
-    &:last-of-type .nav--list-wrapper {
-        left: auto;
-        right: -6px;
-    }
-    input {
-        position: fixed;
-        top: 10000px;
-    }
-    input:focus {
-        ~ .nav--list-wrapper {
-            z-index: 9;
-            opacity: 1;
-            transform: none !important;
-        }
-    }
-}
+// @headersize: (100vh - @mapsize) / 4;
+@headersize: 2vh;
+@graphsize: 50vh;
+@graphheadersize: 70px;
 
 body, html {
     font-size: 10pt;
@@ -115,6 +31,7 @@ header, footer {
     align-content: center;
     justify-items: center;
     justify-content: center;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
 
     padding: 0 10px;
 
@@ -143,11 +60,7 @@ header, footer {
         flex: 1 1 100%;
         min-height: 50%;
         &.container {
-            z-index: 7;   
-        }
-
-        nav:not(.row) {
-            .verticalMenu()
+            z-index: 7;
         }
         .search {
             flex: 5;
@@ -176,6 +89,9 @@ header, footer {
                 max-width: 50px;
                 text-align: center;
             }
+        }
+        .btn-group {
+            width: 100%;
         }
     }
     nav.row {
@@ -218,7 +134,7 @@ header {
     > nav {
         color: white;
         font-weight: bold;
-        text-shadow: 0px 1px 2px black;
+        // text-shadow: 0px 1px 2px black;
         ul li {
             border-right-color: #ddd;
             &:hover {
@@ -231,8 +147,11 @@ footer {
     bottom: 0;
 }
 section.content {
-    background: black;
-    // height: @mapsize;
+
+    &.content-map {
+        background: black;
+        height: @mapsize;
+    }
     // margin: (@headersize * 2) 0 @headersize;
     position: absolute;
     left: 0;
@@ -244,14 +163,13 @@ section.content {
     flex-flow: row nowrap;
     align-items: center;
     justify-content: center;
-    img {
-        max-width: 100%;
-        max-height: 100%;
-    }
     iframe {
         width: 100%;
         height: 100%
     }
+}
+.page-wrapper {
+    margin-top: @graphheadersize;
 }
 .container {
     max-width: 1000px;
@@ -260,10 +178,12 @@ section.content {
     flex: 1 1 100%;
     z-index: 1;
 }
-
+.graph-container {
+    height: @graphsize;
+}
 // crude desktop
 @media (min-width: 1000px) {
-    
+
 }
 // crude tablet
 @media (max-width: 1000px) and (min-width: 700px) {
@@ -281,6 +201,7 @@ section.content {
     section.content {
         top: @headersize * 2;
         bottom: @headersize;
+        height: @mapsize;
     }
     footer {
         height: @headersize;
@@ -325,12 +246,10 @@ section.content {
     section.content {
         top: @headersize;
         bottom: @headersize;
+        height: @mapsize;
     }
     footer {
         height: @headersize;
-    }
-    header nav.row {
-        .verticalMenu();
     }
     header {
         padding: 0;
