@@ -126,7 +126,7 @@ var staticObj = function() {
                 'lat': 51.48519913821487,
                 'lon': -3.1681008338928
             },
-            'name': 'cbx-wsduk01.W_L1',
+            'name': 'cbx-wsduk01.water_total',
             'metrics': ['power', 'flow'],
             'type': 'house'
         });
@@ -136,7 +136,7 @@ var staticObj = function() {
                 'lat': 51.652240917761844,
                 'lon': -3.84364819526674
             },
-            'name': 'cbx-wsduk06.W_L1',
+            'name': 'cbx-wsduk06.water_total',
             'metrics': ['power', 'flow'],
             'type': 'house'
         });

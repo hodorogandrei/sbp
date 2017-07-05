@@ -3,6 +3,7 @@ var graphs = function() {
 	var module = {};
 
 	module.init = function() {
+        // Get the query parameters from the query string
 		const sensorQueryArray = window.location.search.substr(1).split('&');
 		var sensor = {};
 		for (var i = 0; i < sensorQueryArray.length; i++) {
