@@ -17,7 +17,7 @@ var googleMaps = function(){
     };
 
     module.init = function() {
-        const mapsScriptUrl = "https://maps.googleapis.com/maps/api/js?v=3&sensor=true&key=AIzaSyBwC-BzmC2WQwxqWjqCl0ROiloWG68UUVs&callback=initMap";
+        const mapsScriptUrl = "https://maps.googleapis.com/maps/api/js?v=3&sensor=true&key=AIzaSyAlQMftRyyEgHJucxlaXtsRoYXB3o7pp7M&callback=initMap";
 
         window.initMap = async function() {
             const geocoder = new google.maps.Geocoder();
@@ -73,7 +73,7 @@ var googleMaps = function(){
                                 '?URI wis:hasYcoord ?Ycoord .' + '\n' +
                                 '?URI a ?class .',
                 queryToSend,
-                baseUrl = 'https://cardiff.wisdom-project.eu:8082/ontology/',
+                baseUrl = 'http://cardiff.wisdom-project.eu:8082/ontology/',
                 markersDrawn = new Array();
 
             $('html').on('click', '#filter', function() {
